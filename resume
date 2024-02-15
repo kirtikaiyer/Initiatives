@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <title>Resume Template Generator</title>
+ 
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Template Generator</h1>
+        <form id="resumeForm">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="education">Education:</label>
+            <textarea id="education" name="education" required></textarea>
+            <label for="experience">Work Experience:</label>
+            <textarea id="experience" name="experience" required></textarea>
+            <button type="submit">Generate Resume</button>
+            <button id="downloadResume" type="button" style="display:none;">Download PDF</button>
+        </form>
+        <div id="resumePreview" class="resume"></div>
+    </div>
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+        text-align: center;
+    }
+    
+    label {
+        font-weight: bold;
+    }
+    
+    input,
+    textarea {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #0056b3;
+    }
+    
+    .resume {
+        margin-top: 20px;
+        width: 210mm; /* A4 width */
+        min-height: 297mm; /* A4 height */
+        border: 1px solid #ccc;
+        padding: 20px;
+        background-color: #fff;
+        box-sizing: border-box; /* Ensure padding is included in dimensions */
+        overflow: auto; /* Enable scrolling if content overflows */
+    }
+    
+    .resume h2 {
+        margin-top: 0;
+    }
+    
+    .resume h3 {
+        margin-top: 20px;
+    }
+    
+    .resume p {
+        margin: 10px 0;
+    }
+    </style>
+
+   <script>
+    const opt = {
+        margin: 0,
+        filename: 'resume.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    document.getElementById('resumeForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const education = document.getElementById('education').value;
+    const experience = document.getElementById('experience').value;
+
+    const resumeHTML = `
+        <div class="resume">
+            <h2>${fullName}</h2>
+            <p>Email: ${email}</p>
+            <p>Phone: ${phone}</p>
+            <h3>Education</h3>
+            <p>${education}</p>
+            <h3>Work Experience</h3>
+            <p>${experience}</p>
+        </div>
+    `;
+
+    document.getElementById('resumePreview').innerHTML = resumeHTML;
+
+    document.getElementById('downloadResume').style.display = 'block';
+
+    // Add event listener for download PDF button after it's displayed
+    document.getElementById('downloadResume').addEventListener('click', function() {
+        const resumePreview = document.getElementById('resumePreview');
+        const opt = {
+            margin: 0,
+            filename: 'resume.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().from(resumePreview).set(opt).save();
+    });
+});
+
+</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Item Hover Effect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #0056b3;
+        }
+
+        .details {
+            display: none;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        li:hover .details {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>List Item Hover Effect</h1>
+        <ul>
+            <li>
+                Item 1
+                <div class="details">
+                    Details for Item 1
+                </div>
+            </li>
+            <li>
+                Item 2
+                <div class="details">
+                    Details for Item 2
+                </div>
+            </li>
+            <li>
+                Item 3
+                <div class="details">
+                    Details for Item 3
+                </div>
+            </li>
+            <!-- Add more list items as needed -->
+        </ul>
+    </div>
+</body>
+</html>
+
+</body>
+</html>
