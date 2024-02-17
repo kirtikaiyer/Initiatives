@@ -1,0 +1,49 @@
+function numberToWords(number) {
+  // Array of units as words
+  var units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+  
+  // Array of teens as words
+  var teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  
+  // Array of tens as words
+  var tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  
+  // Array of magnitudes
+  var magnitudes = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
+  
+  // Convert a number less than 1000 to words
+  function convertLessThanThousand(number) {
+    var words = '';
+    if (number >= 100) {
+      words += units[Math.floor(number / 100)] + ' Hundred ';
+      number %= 100;
+    }
+    if (number >= 10 && number <= 19) {
+      words += teens[number - 10];
+      number = 0;
+    } else {
+      words += tens[Math.floor(number / 10)];
+      number %= 10;
+    }
+    if (number > 0) {
+      words += ' ' + units[number];
+    }
+    return words;
+  }
+  
+  // Convert a number to words
+  function convertNumberToWords(number) {
+    if (number == 0) return 'Zero';
+    var words = '';
+    for (var i = 0; number > 0; i++) {
+      if (number % 1000 != 0) {
+        words = convertLessThanThousand(number % 1000) + ' ' + magnitudes[i] + ' ' + words;
+      }
+      number = Math.floor(number / 1000);
+    }
+    return words.trim();
+  }
+  
+  // Call the conversion function
+  return convertNumberToWords(number);
+}
