@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="chat-container">
+        <div id="message-container"></div>
+        <input type="text" id="message-input" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    
+    <script>
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            messageInput.value = '';
+            
+            fetch('/send_message', {
+                method: 'POST',
+                body: new URLSearchParams({ message: message }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+        }
+        
+        async function getMessages() {
+            const response = await fetch('/get_messages');
+            const data = await response.json();
+            return data.messages;
+        }
+        
+        async function displayMessages() {
+            const messages = await getMessages();
+            const messageContainer = document.getElementById('message-container');
+            messageContainer.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.innerText = message;
+                messageContainer.appendChild(messageElement);
+            });
+        }
+        
+        setInterval(displayMessages, 1000);
+    </script>
+</body>
+</html>
