@@ -1,0 +1,73 @@
+from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+employees = []
+
+@app.route('/')
+def index():
+    return '''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HRMS</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="employee-container"></div>
+        <button onclick="addEmployee()">Add Employee</button>
+        
+        <script>
+            async function addEmployee() {
+                const name = prompt("Enter employee name:");
+                const data = { name: name };
+                
+                const response = await fetch('/add_employee', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+            }
+            
+            async function getEmployees() {
+                const response = await fetch('/get_employees');
+                const data = await response.json();
+                return data.employees;
+            }
+            
+            async function displayEmployees() {
+                const employees = await getEmployees();
+                const employeeContainer = document.getElementById('employee-container');
+                employeeContainer.innerHTML = '';
+                employees.forEach(employee => {
+                    const employeeElement = document.createElement('div');
+                    employeeElement.innerText = employee.name;
+                    employeeContainer.appendChild(employeeElement);
+                });
+            }
+            
+            displayEmployees();
+        </script>
+    </body>
+    </html>
+    '''
+
+@app.route('/add_employee', methods=['POST'])
+def add_employee():
+    data = request.json
+    employees.append(data)
+    return jsonify({'message': 'Employee added successfully'})
+
+@app.route('/get_employees')
+def get_employees():
+    return jsonify({'employees': employees})
+
+if __name__ == '__main__':
+    app.run(debug=True)
