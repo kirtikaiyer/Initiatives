@@ -1,0 +1,37 @@
+import pandas as pd
+from scipy.sparse import csr_matrix
+from sklearn.decomposition import TruncatedSVD
+from sklearn.neighbors import NearestNeighbors
+
+# Load the dataset (e.g., user-book interactions)
+data = pd.read_csv('books_data.csv')
+
+# Perform data preprocessing (e.g., handling missing values, encoding categorical variables)
+
+# Create a user-book matrix
+user_book_matrix = pd.pivot_table(data, values='rating', index='user_id', columns='book_id', fill_value=0)
+
+# Apply Singular Value Decomposition (SVD) for dimensionality reduction
+model = TruncatedSVD(n_components=10)
+user_book_matrix_reduced = model.fit_transform(user_book_matrix)
+
+# Build a nearest neighbors model
+knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
+knn_model.fit(user_book_matrix_reduced)
+
+# Function to get recommendations for a given user
+def recommend_books(user_id, num_recommendations=5):
+    user_index = user_book_matrix.index.get_loc(user_id)
+    user_vector = user_book_matrix_reduced[user_index].reshape(1, -1)
+    distances, indices = knn_model.kneighbors(user_vector, n_neighbors=num_recommendations + 1)
+    similar_users = [user_book_matrix.index[idx] for idx in indices.flatten()]
+    recommended_books = []
+    for user in similar_users[1:]:  # Exclude the user itself
+        books = data[data['user_id'] == user]['book_id'].unique()
+        recommended_books.extend(books)
+    return recommended_books[:num_recommendations]
+
+# Example usage
+user_id = 'user123'
+recommendations = recommend_books(user_id)
+print("Recommended Books for User", user_id, ": ", recommendations)
