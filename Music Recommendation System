@@ -1,0 +1,37 @@
+import pandas as pd
+from scipy.sparse import csr_matrix
+from sklearn.decomposition import TruncatedSVD
+from sklearn.neighbors import NearestNeighbors
+
+# Load dataset (e.g., user-item interaction data)
+data = pd.read_csv('music_data.csv')
+
+# Perform data preprocessing (e.g., handling missing values, encoding categorical variables)
+
+# Create a user-item matrix
+user_item_matrix = pd.pivot_table(data, values='play_count', index='user_id', columns='song_id', fill_value=0)
+
+# Apply Singular Value Decomposition (SVD) for dimensionality reduction
+model = TruncatedSVD(n_components=10)
+user_item_matrix_reduced = model.fit_transform(user_item_matrix)
+
+# Build a nearest neighbors model
+knn_model = NearestNeighbors(metric='cosine', algorithm='brute')
+knn_model.fit(user_item_matrix_reduced)
+
+# Function to get recommendations for a given user
+def recommend(user_id, num_recommendations=5):
+    user_index = user_item_matrix.index.get_loc(user_id)
+    user_vector = user_item_matrix_reduced[user_index].reshape(1, -1)
+    distances, indices = knn_model.kneighbors(user_vector, n_neighbors=num_recommendations + 1)
+    similar_users = [user_item_matrix.index[idx] for idx in indices.flatten()]
+    recommended_songs = []
+    for user in similar_users[1:]:  # Exclude the user itself
+        songs = data[data['user_id'] == user]['song_id'].unique()
+        recommended_songs.extend(songs)
+    return recommended_songs[:num_recommendations]
+
+# Example usage
+user_id = 'user123'
+recommendations = recommend(user_id)
+print("Recommended Songs for User", user_id, ": ", recommendations)
