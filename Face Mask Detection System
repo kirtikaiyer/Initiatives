@@ -1,0 +1,50 @@
+import cv2
+
+# Load the pre-trained face detector model
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# Load the pre-trained mask detector model
+mask_net = cv2.dnn.readNet('mask_detector_model.weights', 'mask_detector_model.cfg')
+
+# Load the class labels
+with open('mask_detector_classes.txt', 'r') as f:
+    classes = f.read().splitlines()
+
+# Function to detect face masks
+def detect_mask(image):
+    # Convert image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    # Detect faces in the image
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4)
+    
+    # Loop through detected faces
+    for (x, y, w, h) in faces:
+        face_roi = image[y:y+h, x:x+w]
+        
+        # Preprocess face ROI for mask detection
+        blob = cv2.dnn.blobFromImage(face_roi, scalefactor=1.0, size=(224, 224), mean=(0, 0, 0), swapRB=True, crop=False)
+        mask_net.setInput(blob)
+        
+        # Perform inference to detect mask
+        predictions = mask_net.forward()
+        mask_prob = predictions[0][0]
+        
+        # Determine class label and color
+        label = classes[1] if mask_prob > 0.5 else classes[0]
+        color = (0, 255, 0) if label == 'mask' else (0, 0, 255)
+        
+        # Display bounding box and label
+        cv2.rectangle(image, (x, y), (x+w, y+h), color, 2)
+        cv2.putText(image, label, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+    
+    return image
+
+# Test the mask detection function on an image
+image = cv2.imread('test_image.jpg')
+output_image = detect_mask(image)
+
+# Display the output image
+cv2.imshow('Mask Detection', output_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
