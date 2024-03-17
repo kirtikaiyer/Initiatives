@@ -1,0 +1,86 @@
+// to upload files
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="file"],
+        button {
+            display: block;
+            margin: 10px auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #pdfViewer {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload PDF</h1>
+    <input type="file" id="pdfFileInput" accept=".pdf" multiple>
+    <button onclick="displayFirstPDF()">Display First PDF</button>
+    <br>
+    <div id="pdfViewer"></div>
+
+    <script>
+        function displayFirstPDF() {
+            const fileInput = document.getElementById('pdfFileInput').files;
+
+            if (fileInput.length === 0) {
+                alert('Please select a file.');
+                return;
+            }
+
+            const firstFile = fileInput[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const pdfViewer = document.getElementById('pdfViewer');
+                const pdfObject = document.createElement('object');
+
+                pdfObject.data = e.target.result;
+                pdfObject.type = 'application/pdf';
+                pdfObject.width = '100%';
+                pdfObject.height = '500px';
+
+                pdfViewer.innerHTML = ''; // Clear previous PDF if any
+                pdfViewer.appendChild(pdfObject);
+            };
+
+            reader.readAsDataURL(firstFile);
+        }
+    </script>
+</body>
+</html>
