@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+</head>
+<body>
+    <h2>Length Converter</h2>
+    <p>
+        <label for="lengthInput">Enter Length:</label>
+        <input type="number" id="lengthInput">
+        <select id="lengthFrom">
+            <option value="km">Kilometer</option>
+            <option value="m">Meter</option>
+            <option value="cm">Centimeter</option>
+            <option value="mm">Millimeter</option>
+            <option value="in">Inch</option>
+            <option value="ft">Foot</option>
+            <!-- Add more units here -->
+        </select>
+        <label for="lengthTo">To:</label>
+        <select id="lengthTo">
+            <option value="km">Kilometer</option>
+            <option value="m">Meter</option>
+            <option value="cm">Centimeter</option>
+            <option value="mm">Millimeter</option>
+            <option value="in">Inch</option>
+            <option value="ft">Foot</option>
+            <!-- Add more units here -->
+        </select>
+        <button onclick="convertLength()">Convert</button>
+    </p>
+    <p id="lengthResult"></p>
+
+    <!-- Add more converters for other units (area, volume, etc.) similarly -->
+
+    <h2>Power Converter</h2>
+    <p>
+        <label for="powerInput">Enter Power:</label>
+        <input type="number" id="powerInput">
+        <select id="powerFrom">
+            <option value="w">Watt</option>
+            <option value="hp">Horsepower</option>
+            <!-- Add more units here -->
+        </select>
+        <label for="powerTo">To:</label>
+        <select id="powerTo">
+            <option value="w">Watt</option>
+            <option value="hp">Horsepower</option>
+            <!-- Add more units here -->
+        </select>
+        <button onclick="convertPower()">Convert</button>
+    </p>
+    <p id="powerResult"></p>
+
+    <h2>Volume Converter</h2>
+    <p>
+        <label for="volumeInput">Enter Volume:</label>
+        <input type="number" id="volumeInput">
+        <select id="volumeFrom">
+            <option value="m3">Cubic Meter</option>
+            <option value="km3">Cubic Kilometer</option>
+            <option value="cm3">Cubic Centimeter</option>
+            <option value="mm3">Cubic Millimeter</option>
+            <option value="l">Liter</option>
+            <option value="ml">Milliliter</option>
+            <option value="galUS">Gallon (US)</option>
+            <option value="qtUS">Quart (US)</option>
+            <option value="ptUS">Pint (US)</option>
+            <option value="cupUS">Cup (US)</option>
+            <option value="tbspUS">Tablespoon (US)</option>
+            <option value="tspUS">Teaspoon (US)</option>
+            <option value="mi3">Cubic Mile</option>
+            <option value="yd3">Cubic Yard</option>
+            <option value="ft3">Cubic Foot</option>
+            <option value="in3">Cubic Inch</option>
+            <option value="dm3">Cubic Decimeter</option>
+            <!-- Add more units here -->
+        </select>
+        <label for="volumeTo">To:</label>
+        <select id="volumeTo">
+            <option value="m3">Cubic Meter</option>
+            <option value="km3">Cubic Kilometer</option>
+            <option value="cm3">Cubic Centimeter</option>
+            <option value="mm3">Cubic Millimeter</option>
+            <option value="l">Liter</option>
+            <option value="ml">Milliliter</option>
+            <option value="galUS">Gallon (US)</option>
+            <option value="qtUS">Quart (US)</option>
+            <option value="ptUS">Pint (US)</option>
+            <option value="cupUS">Cup (US)</option>
+            <option value="tbspUS">Tablespoon (US)</option>
+            <option value="tspUS">Teaspoon (US)</option>
+            <option value="mi3">Cubic Mile</option>
+            <option value="yd3">Cubic Yard</option>
+            <option value="ft3">Cubic Foot</option>
+            <option value="in3">Cubic Inch</option>
+            <option value="dm3">Cubic Decimeter</option>
+            <!-- Add more units here -->
+        </select>
+        <button onclick="convertVolume()">Convert</button>
+    </p>
+    <p id="volumeResult"></p>
+
+    <h2>Velocity Converter</h2>
+    <p>
+        <label for="velocityInput">Enter Velocity:</label>
+        <input type="number" id="velocityInput">
+        <select id="velocityFrom">
+            <option value="m/s">Meter/Second</option>
+            <option value="km/h">Kilometer/Hour</option>
+            <option value="mi/h">Mile/Hour</option>
+            <!-- Add more units here -->
+        </select>
+        <label for="velocityTo">To:</label>
+        <select id="velocityTo">
+            <option value="m/s">Meter/Second</option>
+            <option value="km/h">Kilometer/Hour</option>
+            <option value="mi/h">Mile/Hour</option>
+            <!-- Add more units here -->
+        </select>
+        <button onclick="convertVelocity()">Convert</button>
+    </p>
+    <p id="velocityResult"></p>
+
+    <h2>Energy Converter</h2>
+    <p>
+        <label for="energyInput">Enter Energy:</label>
+        <input type="number" id="energyInput">
+        <select id="energyFrom">
+            <option value="J">Joule</option>
+            <option value="kJ">Kilojoule</option>
+            <option value="kWh">Kilowatt-hour</option>
+            <option value="Wh">Watt-hour</option>
+            <option value="cal">Calorie (nutritional)</option>
+            <!-- Add more units here -->
+        </select>
+        <label for="energyTo">To:</label>
+        <select id="energyTo">
+            <option value="J">Joule</option>
+            <option value="kJ">Kilojoule</option>
+            <option value="kWh">Kilowatt-hour</option>
+            <option value="Wh">Watt-hour</option>
